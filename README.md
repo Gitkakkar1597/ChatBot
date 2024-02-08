@@ -1,2 +1,2 @@
 # ChatBot
-Custom AI-driven chatbot GUI web-application
+AI-driven conversational chatbot web-application using OpenAI's chat-completions python API
