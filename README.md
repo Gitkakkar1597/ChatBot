@@ -67,7 +67,7 @@ flask_chatbot/
    Copy code
    venv\Scripts\activate
    
-   On macOS/Linux:
+  On macOS/Linux:
 
    ```bash
    Copy code
