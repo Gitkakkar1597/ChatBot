@@ -1,38 +1,34 @@
-# Import necessary modules
 from flask import Flask, render_template, request
-import os
-import openai
+import google.generativeai as genai
 import time
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__, static_folder="static")
 
-# Configure OpenAI API key
-openai.api_key = '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'
+# Configure Google AI API key from environment variable
+api_key = os.getenv('GOOGLE_API_KEY')
+genai.configure(api_key=api_key)
 
-# Function to interact with OpenAI's GPT-3.5 model
-def bot(prompt, model='gpt-3.5-turbo', temperature=0.9, max_tokens=100, top_p=1.0, frequency_penalty=0.0, presence_penalty=0.9, stop=[" User:", " AI:"]):
+# Initialize the Gemini model
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+# Function to interact with Gemini AI model
+def bot(prompt, model=model):
     try:
-        # Request completion from OpenAI's API
-        response = openai.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant"},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=temperature,
-            max_tokens=max_tokens,
-            top_p=top_p,
-            frequency_penalty=frequency_penalty,
-            presence_penalty=presence_penalty,
-            stop=stop
-        )
-        # Extract response text from the API response
-        text = response.choices[0].message.content
+        full_prompt = (f"You are 'ChatBot', a chat assistant designed to answer users' queries. "
+                       f"Always refer to yourself simply as 'ChatBot'. Never mention that you are a large language model "
+                       f"or associated with any specific technology or company. Respond in short, plain text, without any "
+                       f"special characters or symbols. Be concise and to the point:-  {prompt}")
+        response = model.generate_content(full_prompt)
+        text = response.text
         return text
     except Exception as e:
-        # Handle errors during interaction with the OpenAI API
-        return "GPT-3 Error: {}".format(e)
+        return "Gemini AI Error: {}".format(e)
 
 # Route for the homepage
 @app.route("/")
