@@ -61,14 +61,12 @@ flask_chatbot/
    
 3. **Activate the Virtual Environment**
 
-   On Windows:
-
+- On Windows:
    ```bash
    Copy code
    venv\Scripts\activate
    
-  On macOS/Linux:
-
+- On macOS/Linux:
    ```bash
    Copy code
    source venv/bin/activate
